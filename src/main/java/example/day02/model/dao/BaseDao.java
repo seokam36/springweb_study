@@ -16,7 +16,7 @@ public class BaseDao {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             conn = DriverManager.getConnection(url, user, password );
-        }catch( Exception e ){ System.out.println("DB연동실패" + e);}
+        }catch( Exception e ){ System.out.println("DB연동실패 : " + e);}
     }
 
     protected BaseDao(){ connect(); }
