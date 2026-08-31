@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        전화번호 : <input type="text" class="telNum"/><br>
+        인원 : <input type="text" class="people"/><br>
+        <button onclick="save()"> 등록 </button>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>전화번호</th>
+                    <th>인원</th>
+                </tr>
+            </thead>
+            <tbody class="waitList">
+                <tr>
+                    <td>1</td>
+                    <td>010-1351-1515</td>
+                    <td>1</td>
+                    <td>
+                        <button>수정</button>
+                        <button>삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

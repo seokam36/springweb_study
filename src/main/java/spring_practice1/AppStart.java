@@ -1,4 +1,4 @@
-package spring_practice_1;
+package spring_practice1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

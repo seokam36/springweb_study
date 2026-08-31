@@ -1,4 +1,4 @@
-package spring_practice_1.model.dto;
+package spring_practice1.model.dto;
 
 public class WaitListDto {
     private int num;
