@@ -1,4 +1,4 @@
-package spring_practice1.model.dao;
+package spring_practice.model.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

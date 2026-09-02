@@ -1,6 +1,6 @@
-package spring_practice1.model.dao;
+package spring_practice.model.dao;
 
-import spring_practice1.model.dto.WaitListDto;
+import spring_practice.model.dto.WaitListDto;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

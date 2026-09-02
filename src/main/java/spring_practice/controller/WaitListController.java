@@ -1,8 +1,8 @@
-package spring_practice1.controller;
+package spring_practice.controller;
 
 import org.springframework.web.bind.annotation.*;
-import spring_practice1.model.dao.WaitListDao;
-import spring_practice1.model.dto.WaitListDto;
+import spring_practice.model.dao.WaitListDao;
+import spring_practice.model.dto.WaitListDto;
 
 import java.util.ArrayList;
 
