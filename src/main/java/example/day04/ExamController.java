@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class ExamController {
     // 서비스객체 (주입)불러오기
     private final ExamService service;
-    private final ExamRepository examRepository;
 
     // [1] 전체 조회
     @GetMapping ("/day04/exam")
