@@ -23,7 +23,7 @@ public class TestController {
     }
 
     @GetMapping ("/detail")
-    public Optional<TestEntity> findById(@RequestParam int no){
+    public TestEntity findById(@RequestParam int no){
         return service.findById(no);
     }
 

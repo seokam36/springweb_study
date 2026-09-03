@@ -28,8 +28,13 @@ public class TestService {
     }
 
     // 개별 리스트 조회
-    public Optional<TestEntity> findById(int no) {
-        return repository.findById(no);
+    public TestEntity findById(int no) {
+        Optional<TestEntity> optional = repository.findById(no);
+        if (optional.isPresent()){
+            TestEntity testEntity = optional.get();
+            return testEntity;
+        }
+        return null;
     }
 
     // 리스트 삭제
