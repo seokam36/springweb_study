@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestService {
 
     private final TestRepository repository;
@@ -39,13 +40,16 @@ public class TestService {
 
     // 리스트 삭제
     public boolean delete(int no) {
-        repository.deleteById(no);
-        return true;
+        Optional<TestEntity> optional = repository.findById(no);
+        if (optional.isPresent()){
+            repository.deleteById(no);
+            return true;
+        }
+        return false;
     }
 
     // 리스트 업데이트
-    @Transactional
-    public boolean update(TestEntity testEntity) {
+      public boolean update(TestEntity testEntity) {
         Optional<TestEntity> optional = repository.findById(testEntity.getNo());
         if (optional.isPresent()){
             TestEntity savedEntity = optional.get();
