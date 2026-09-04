@@ -23,7 +23,7 @@ public class MovieEntity extends BaseTime{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer movieId;
 
-    @Column(length = 50)
+    @Column(length = 50 )
     private String title;
 
     @Column(length = 30 )
