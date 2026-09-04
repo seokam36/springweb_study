@@ -1,11 +1,13 @@
 package spring_activity1.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="Recipe")
-@Data
+@Data @NoArgsConstructor @AllArgsConstructor
 public class RecipeEntity extends BaseTime{
 
     @Id
