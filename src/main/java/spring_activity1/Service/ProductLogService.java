@@ -2,6 +2,7 @@ package spring_activity1.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring_activity1.Dto.ProductLogDto;
 import spring_activity1.Entity.ProductEntity;
 import spring_activity1.Entity.ProductLogEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductLogService {
     private final ProductLogRepository productLogRepository;
     private final ProductRepository productRepository;
@@ -57,12 +59,35 @@ public class ProductLogService {
 
     // 로그 수정
     public boolean update(ProductLogDto productLogDto) {
-        //productLogDto
+        // 수정할 productLog 찾기
+        Optional<ProductLogEntity> byId = productLogRepository.findById(productLogDto.getProductlog_no());
+        if (byId.isPresent()){
+            ProductLogEntity productLogEntity = byId.get();
+            if (productLogDto.getProduct_qty() != null){
+                productLogEntity.setProduct_qty(productLogDto.getProduct_qty());
+            }
+            if (productLogDto.getProduct_condition() != null){
+                productLogEntity.setProduct_condition(productLogDto.getProduct_condition());
+            }
+            if (productLogDto.getCustomerlog_day() != null){
+                productLogEntity.setCustomerlog_day(productLogDto.getCustomerlog_day());
+            }
+            if (productLogDto.getProductlog_price() != null){
+                productLogEntity.setProductlog_price(productLogDto.getProductlog_price());
+            }
+            // product_no 값을 넘겼는지 안넘겼는지 확인 , 넘겼으면 해당 no값으로 product 객체를 찾아서 세팅
+            if (productLogDto.getProduct_no() != null){
+                Optional<ProductEntity> productById = productRepository.findById(productLogDto.getProduct_no());
+                if (productById.isPresent()){
+                    productLogEntity.setProductEntity(productById.get());
+                }
+            }
+            return true;
+        }
         return false;
     }
 
     // 로그 삭제
-
     public boolean delete(int no) {
         return false;
     }
