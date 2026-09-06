@@ -89,6 +89,12 @@ public class ProductLogService {
 
     // 로그 삭제
     public boolean delete(int no) {
+        Optional<ProductLogEntity> byId = productLogRepository.findById(no);
+        if (byId.isPresent()){
+            ProductLogEntity productLogEntity = byId.get();
+            productLogRepository.deleteById(productLogEntity.getProductlog_no());
+            return true;
+        }
         return false;
     }
 }
