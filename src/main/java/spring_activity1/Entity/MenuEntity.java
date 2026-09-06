@@ -1,10 +1,7 @@
 package spring_activity1.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +20,6 @@ public class MenuEntity extends BaseTime{
     private Integer menu_price;
 
     @OneToMany(mappedBy = "menuEntity")
+    @ToString.Exclude
     private List<RecipeEntity> recipeList = new ArrayList<>();
 }

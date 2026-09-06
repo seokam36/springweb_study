@@ -26,7 +26,7 @@ public class ProductLogController {
 
     // 로그 개별 조회
     @GetMapping("/detail")
-    public List<ProductLogDto> findById(@RequestParam int no){
+    public ProductLogDto findById(@RequestParam(name = "no") int no){
         return service.findById(no);
     }
 
@@ -38,7 +38,7 @@ public class ProductLogController {
 
     // 로그 삭제
     @DeleteMapping
-    public boolean delete(@RequestParam int no){
+    public boolean delete(@RequestParam(name = "no") int no){
         return service.delete(no);
     }
 }
