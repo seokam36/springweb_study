@@ -9,13 +9,12 @@ async function getPosts() {
         feedContainer.innerHTML = '';
 
         res.data.forEach(post => {
-            console.log( post )
             const card = document.createElement('article');
             card.className = 'post-card';
 
             const commentList = post.comments || [];
             const initial = (post.author || '?').charAt(0).toUpperCase();
-            const isOpen = openCommentSet.has(post.boardId);
+            const isOpen = openCommentSet.has(post.id);
 
             const commentsHtml = commentList.length > 0
                 ? commentList.map(c => `
@@ -24,7 +23,7 @@ async function getPosts() {
                             <div class="cmt-author">${c.author || ''}</div>
                             <div class="cmt-text">${c.content || ''}</div>
                         </div>
-                        <button type="button" class="btn-del-sm" onclick="removeComment(${post.boardId}, ${c.commentId})">삭제</button>
+                        <button type="button" class="btn-del-sm" onclick="removeComment(${post.id}, ${c.id})">삭제</button>
                     </div>
                 `).join('')
                 : '<div style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 10px 0;">첫 번째 댓글을 남겨보세요.</div>';
@@ -41,15 +40,15 @@ async function getPosts() {
                 </div>
                 <div class="post-content">${post.content || ''}</div>
                 <div class="post-actions">
-                    <button type="button" class="action-chip" onclick="toggleComments(${post.boardId}, this)">
+                    <button type="button" class="action-chip" onclick="toggleComments(${post.id}, this)">
                         💬 ${commentList.length}
                     </button>
-                    <button type="button" class="action-chip delete" onclick="removePost(${post.boardId})">
+                    <button type="button" class="action-chip delete" onclick="removePost(${post.id})">
                         삭제
                     </button>
                 </div>
                 <!-- 하단 댓글 드로어 (인라인 출력) -->
-                <div class="comment-drawer ${isOpen ? 'open' : ''}" id="comments-${post.boardId}">
+                <div class="comment-drawer ${isOpen ? 'open' : ''}" id="comments-${post.id}">
                     <div class="comment-items-box">${commentsHtml}</div>
                     <div class="comment-write-box">
                         <div class="input-row">
@@ -58,7 +57,7 @@ async function getPosts() {
                         </div>
                         <textarea class="input-cmt-content" placeholder="댓글 남기기..." style="min-height: 55px;"></textarea>
                         <div style="text-align: right;">
-                            <button type="button" class="btn-submit" style="padding: 8px 18px; font-size: 13px;" onclick="addComment(${post.boardId}, this)">댓글 등록</button>
+                            <button type="button" class="btn-submit" style="padding: 8px 18px; font-size: 13px;" onclick="addComment(${post.id}, this)">댓글 등록</button>
                         </div>
                     </div>
                 </div>
@@ -106,7 +105,6 @@ async function writePost() {
 
 // 4. 글 삭제 (DELETE /api/board?id=1&password=1234 - Query String)
 async function removePost(id) {
-    console.log( id )
     const password = prompt('비밀번호를 입력하세요:');
     try {
         await axios.delete('/api/board', {
