@@ -8,7 +8,7 @@ import spring_total.service.ProductService;
 
 import java.util.List;
 
-@CrossOrigin(value = "http://localhost:5174")
+@CrossOrigin(value = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
