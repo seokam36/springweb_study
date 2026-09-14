@@ -9,7 +9,7 @@ import spring_total.model.dto.ReviewDto;
 import spring_total.service.ReviewService;
 
 
-@CrossOrigin (value = "http://localhost:5173")
+@CrossOrigin(value = "http://localhost:5174")
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {

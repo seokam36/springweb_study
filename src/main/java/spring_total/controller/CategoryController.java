@@ -19,7 +19,7 @@ import spring_total.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin(value = "http://localhost:5173")
+@CrossOrigin(value = "http://localhost:5174")
 public class CategoryController {
     @Autowired private CategoryService categoryService;
 
