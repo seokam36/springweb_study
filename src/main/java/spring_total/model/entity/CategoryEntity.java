@@ -24,11 +24,11 @@ import lombok.ToString;
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer no;
+    private Integer cno;
 
     private String name;
 
-    @OneToMany (mappedBy = "productEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "categoryEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     @ToString.Exclude
     private List<ProductEntity> productEntities = new ArrayList<>();

@@ -32,7 +32,7 @@ public class ReviewEntity{
     private Integer rating;
 
     @ManyToOne
-    @JoinColumn( name = "b_no")
+    @JoinColumn( name = "bno")
     private ProductEntity productEntity;
 
 
