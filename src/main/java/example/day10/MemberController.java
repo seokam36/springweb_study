@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
 
     // [1] 회원가입
-    @PostMapping
+    @PostMapping("/signup")
     public boolean signUp(@RequestBody MemberDto memberDto){
         return memberService.signup(memberDto);
     }
@@ -33,7 +34,7 @@ public class MemberController {
     }
 
     // [3] 내정보조회 + 세션 (이미 로그인된 회원이 내정보 요청)
-    @GetMapping("/mypage")
+    @GetMapping("/me")
     public MemberDto getMyInfo(HttpSession session){
         // * 사용자에게 추가로 입력받을 값 X
         // 1) 세션에서 특정한 정보 꺼내기
