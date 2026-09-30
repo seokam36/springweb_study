@@ -15,6 +15,7 @@ import java.time.Duration;
 public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+    private final RedisTokenService redisTokenService;
 
     // [1] 회원가입
     @PostMapping("/signup")
@@ -31,19 +32,32 @@ public class MemberController {
             return null;
         }
 
-        // 2. 로그인 성공 시 쿠키 생성/발급 *** 쿠키 값을 jwt 안전하게 변경 ***
-        // 토큰 발급 요청
-        String token = jwtUtil.createToken(result.getMno()); // mno --> jwt
-        ResponseCookie cookie = ResponseCookie.from("login_member", token)
-                .path("/") // 쿠키 사용할 경로, "/" 도메인 전체
-                .maxAge(Duration.ofDays(1)) // 쿠키의 유효기간, 1일
-                .httpOnly(true) // JS 이용한 탈취 방지, XSS공격
-                .secure(false) // HTTPS 에서만 사용, 개발단계 : false, 배포단계 : true
-                .sameSite("LAX") // CSRF 공격방어
-                .build(); // 쿠키 생성 끝
+        // 토큰 **2개** 발급 요청
+        String accessToken = jwtUtil.createAccessToken(result.getMno());
+        String refreshToken = jwtUtil.createRefreshToken(result.getMno());
 
-        // 3. 응답 헤더에 쿠기 등록 , response.setHeader()
-        response.setHeader(HttpHeaders.SET_COOKIE , cookie.toString());
+        // refreshToken만 redis에 저장
+        redisTokenService.setRefreshToken(result.getMno(), refreshToken);
+
+        // // 2. 로그인 성공 시 쿠키 생성/발급
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", accessToken)
+                .path("/")
+                .maxAge(Duration.ofMinutes(30)) // 30분
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .build();
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", accessToken)
+                .path("/")
+                .maxAge(Duration.ofDays(7)) // 7일
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .build();
+
+        // 3. 응답 헤더에 쿠키 2개 등록 , response.setHeader()
+        response.setHeader(HttpHeaders.SET_COOKIE , cookie1.toString());
+        response.setHeader(HttpHeaders.SET_COOKIE , cookie2.toString());
         return result;
     }
 

@@ -25,6 +25,14 @@ public class JWTUtil {
     }
 
     // [3] JWT Refresh 토큰 생성 메소드
+    public String createRefreshToken(Long mno){
+        return Jwts.builder()
+                .claim("type", "REFRESH")
+                .subject(mno+"")
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + 1000L * 60 * 60 * 24 * 7)) // 액세스 토큰 보다 만료기간 길게
+                .compact();
+    }
 
     // [1] JWT Access 토큰 생성 메소드
     public String createAccessToken(long mno){
