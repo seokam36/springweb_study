@@ -47,7 +47,7 @@ public class MemberController {
                 .secure(false)
                 .sameSite("Lax")
                 .build();
-        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", accessToken)
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", refreshToken)
                 .path("/")
                 .maxAge(Duration.ofDays(7)) // 7일
                 .httpOnly(true)
@@ -56,14 +56,14 @@ public class MemberController {
                 .build();
 
         // 3. 응답 헤더에 쿠키 2개 등록 , response.setHeader()
-        response.setHeader(HttpHeaders.SET_COOKIE , cookie1.toString());
-        response.setHeader(HttpHeaders.SET_COOKIE , cookie2.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE , cookie1.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE , cookie2.toString());
         return result;
     }
 
     // [3] 내정보조회 + 쿠키
     @GetMapping("/me")
-    public MemberDto getMyInfo(@CookieValue(value = "login_member", required = false)String token){ // 요청한 브라우저의 쿠키 가져오기
+    public MemberDto getMyInfo(@CookieValue(value = "accessToken", required = false)String token){ // 요청한 브라우저의 쿠키 가져오기
         // 1. 만약에 token이 없다면 비로그인
         if (token == null){
             return null;
@@ -77,17 +77,27 @@ public class MemberController {
 
     // [4] 로그아웃 + 쿠키
     @PostMapping("/logout")
-    public boolean logout(HttpServletResponse response){
-        // 1. 삭제할 쿠키명과 동일한 이름으로 maxAge(0) 으로 재발급
-        ResponseCookie cookie = ResponseCookie.from("login_member","")
-                .path("/") // 모든곳에서 로그아웃 가능하도록
-                .httpOnly(true)
-                .secure(false)
-                .maxAge(0) //바로 삭제
-                .build();
+    public boolean logout(@CookieValue(value = "accessToken", required = false)String accessToken, HttpServletResponse response){
+        // 1. 만약 accessToken 존재하면
+        if (accessToken != null){
+            Long mno = jwtUtil.getMnoFromToken(accessToken);
+            // 2. 만약에 회원번호 조회 되면 레디스내 refresh 삭제
+            redisTokenService.deleteRefreshToken(mno);
+        }
 
-        // 2. 응답객체내 헤더에 쿠키 포함
-        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        // 3. 쿠키 2개 삭제
+        ResponseCookie cookie1 = ResponseCookie.from("accessToken", "")
+                .path("/")
+                .maxAge(0)
+                .secure(false)
+                .build();
+        ResponseCookie cookie2 = ResponseCookie.from("refreshToken", "")
+                .path("/")
+                .maxAge(0)
+                .secure(false)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE , cookie1.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE , cookie2.toString());
         return true;
     }
 }
