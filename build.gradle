@@ -47,6 +47,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // 11. websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // 12. 웹크롤링
+    implementation 'org.jsoup:jsoup:1.23.2' // 정적페이지 용도
+    implementation 'com.microsoft.playwright:playwright:1.63.0' // 동적페이지 용도
 }
 
 tasks.named('test') {
